@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use AnomNOVIC, please cite this paper."
+type: software
+title: AnomNOVIC
+authors:
+  - family-names: Allgeuer
+    given-names: Philipp
+  - family-names: Habekost
+    given-names: Jan-Gerrit
+  - family-names: Wermter
+    given-names: Stefan
+year: 2026
+repository-code: "https://github.com/pallgeuer/anomnovic"
+preferred-citation:
+  type: conference-paper
+  title: "Identifying the Unknown: Prompt-Free Open Vocabulary Anomaly Recognition for Robot-Object Interaction"
+  authors:
+    - family-names: Allgeuer
+      given-names: Philipp
+    - family-names: Habekost
+      given-names: Jan-Gerrit
+    - family-names: Wermter
+      given-names: Stefan
+  year: 2027
+  collection-title: "Artificial Neural Networks and Machine Learning – ICANN 2026"
+  start: 530
+  end: 543
+  doi: "10.1007/978-3-032-38401-0_43"
+  url: "https://link.springer.com/chapter/10.1007/978-3-032-38401-0_43"
