@@ -20,6 +20,7 @@ data/
 *.jpg
 *.jpeg
 !docs/images/anomnovic_pipeline.png
+!docs/images/anomnovic_pipeline_small.png
 !docs/images/anomnovic_wild_result.jpg
 *.npy
 *.npz

@@ -17,9 +17,9 @@ Code release corresponding to the published paper:
 
 AnomNOVIC combines a masked autoencoder (MAE) with the [NOVIC](https://github.com/pallgeuer/novic) open vocabulary image classification model. The MAE reconstructs the NICOL robot's tabletop workspace (or whichever workspace was trained) and predicts table (or more generally, valid workspace) and anomaly masks. These masks and the reconstruction error are used internally to localize anomalies and extract bounding boxes. The inference pipeline then uses NOVIC to assign free-form names to the resulting image crops, and thereby perform prompt-free open vocabulary object detection.
 
-[![AnomNOVIC pipeline from input image through MAE reconstruction, anomaly localization, and NOVIC classification](docs/images/anomnovic_pipeline.png)](docs/images/anomnovic_pipeline.png)
-
-*AnomNOVIC inference pipeline.*
+| [![AnomNOVIC pipeline from input image through MAE reconstruction, anomaly localization, and NOVIC classification](docs/images/anomnovic_pipeline_small.png)](docs/images/anomnovic_pipeline.png) |
+| :-: |
+| *AnomNOVIC inference pipeline.* |
 
 This repository provides the code and configurations required for training, inference, and evaluation, along with links to the weights and datasets. NOVIC inference uses a supplied checkpoint, but NOVIC training is handled by the separate [NOVIC repository](https://github.com/pallgeuer/novic).
 
@@ -67,9 +67,9 @@ anomnovic-infer --image_dir /PATH/TO/IMAGES --output PREDICTIONS.json --anom_mod
 
 The command writes a JSON list of boxes, scores and free-form category names. `--declass` runs localization without NOVIC. `--show` displays images in a graphical environment. See `anomnovic-infer --help` for thresholds and other settings.
 
-[![AnomNOVIC predictions with object boxes and free-form labels on a Wild tabletop scene](docs/images/anomnovic_wild_result.jpg)](docs/images/anomnovic_wild_result.jpg)
-
-*Example predictions on an image from the Wild test set.*
+| [![AnomNOVIC predictions with object boxes and free-form labels on a Wild tabletop scene](docs/images/anomnovic_wild_result.jpg)](docs/images/anomnovic_wild_result.jpg) |
+| :-: |
+| *Example predictions on an image from the Wild test set.* |
 
 To evaluate on a test ZIP containing annotations, run these commands.
 
