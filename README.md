@@ -19,7 +19,7 @@ AnomNOVIC combines a masked autoencoder (MAE) with the [NOVIC](https://github.co
 
 | [![AnomNOVIC pipeline from input image through MAE reconstruction, anomaly localization, and NOVIC classification](docs/images/anomnovic_pipeline_small.png)](docs/images/anomnovic_pipeline.png) |
 | :-: |
-| *AnomNOVIC inference pipeline.* |
+| *AnomNOVIC inference pipeline* |
 
 This repository provides the code and configurations required for training, inference, and evaluation, along with links to the weights and datasets. NOVIC inference uses a supplied checkpoint, but NOVIC training is handled by the separate [NOVIC repository](https://github.com/pallgeuer/novic).
 
@@ -69,7 +69,7 @@ The command writes a JSON list of boxes, scores and free-form category names. `-
 
 | [![AnomNOVIC predictions with object boxes and free-form labels on a Wild tabletop scene](docs/images/anomnovic_wild_result.jpg)](docs/images/anomnovic_wild_result.jpg) |
 | :-: |
-| *Example predictions on an image from the Wild test set.* |
+| *Example predictions (restricted to the table workspace by design) on an image from the Wild test set* |
 
 To evaluate on a test ZIP containing annotations, run these commands.
 
