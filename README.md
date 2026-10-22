@@ -23,7 +23,7 @@ AnomNOVIC combines a masked autoencoder (MAE) with the [NOVIC](https://github.co
 
 This repository provides the code and configurations required for training, inference, and evaluation, along with links to the weights and datasets. NOVIC inference uses a supplied checkpoint, but NOVIC training is handled by the separate [NOVIC repository](https://github.com/pallgeuer/novic).
 
-## Contents
+## Repository Contents
 
 | Path | Contents |
 | --- | --- |
@@ -33,8 +33,6 @@ This repository provides the code and configurations required for training, infe
 | [`src/anomnovic/inference.py`](src/anomnovic/inference.py) | Detection and naming |
 | [`src/anomnovic/evaluate.py`](src/anomnovic/evaluate.py) | COCO evaluation |
 | [`docs/`](docs/) | Assets and attribution |
-
-Refer to [dataset ZIPs](docs/datasets.md) and [checkpoints](docs/checkpoints.md) for how to download the corresponding resources.
 
 ## Installation
 
@@ -57,6 +55,10 @@ export PYTHONPATH="$(realpath ../novic)${PYTHONPATH:+:$PYTHONPATH}"
 
 The optional SAM2 refinement step requires [SAM2](https://github.com/facebookresearch/sam2). Omit `--sam_model` from the appropriate commands to run without it. On first NOVIC inference, its CLIP image backbone will be downloaded into the local model cache.
 
+## Datasets and Checkpoints
+
+Refer to [dataset ZIPs](docs/datasets.md) and [checkpoints](docs/checkpoints.md) for how to download the corresponding resources for training, inference, and evaluation.
+
 ## Inference
 
 Download a NICOL MAE checkpoint from the [checkpoint assets](docs/checkpoints.md) and a NOVIC checkpoint. The public FT0 and FT2 NOVIC weights are available as part of the [NOVIC v1.0.0](https://github.com/pallgeuer/novic/releases/tag/v1.0.0) release assets. The N-FT0 and N-FT2 weights are available through the [AnomNOVIC checkpoint assets](docs/checkpoints.md). Use the MAE trained on the dataset matching your scene.
@@ -71,6 +73,8 @@ The command writes a JSON list of boxes, scores and free-form category names. `-
 | :-: |
 | *Example predictions (restricted to the table workspace by design) on an image from the Wild test set* |
 
+## Evaluation
+
 To evaluate on a test ZIP containing annotations, run these commands.
 
 ```bash
@@ -82,9 +86,9 @@ anomnovic-evaluate evaluate /PATH/TO/GT_PLAIN.json /PATH/TO/PRED_COCO.json
 
 The category alignment file records which free-form nouns count as correct or close for those classes. Review unfamiliar predictions before treating the open vocabulary COCO metric as final. The label remap file allows a remapping to be specified for e.g. renaming or merging annotated classes in a test dataset.
 
-## MAE training
+## Training
 
-Extract the matching training and annotated test ZIPs. Each training image has a corresponding `mask_*.png` table mask, and each training archive includes `virtual_anomalies/`. Run the matching configuration.
+In order to train the MAE, first extract the matching training and annotated test ZIPs, then run the matching configuration. Each training image has a corresponding `mask_*.png` table mask, and each training archive includes `virtual_anomalies/`.
 
 ```bash
 bash configs/train_plain.sh /PATH/TO/TRAIN_PLAIN_DIR /PATH/TO/TEST_PLAIN_DIR /PATH/TO/OUTPUT_PLAIN_DIR
@@ -93,6 +97,6 @@ bash configs/train_distractors.sh /PATH/TO/TRAIN_DISTRACTORS_DIR /PATH/TO/TEST_D
 
 Training configuration parameters follow the two supplied MAE checkpoints. The test images are used for validation previews only. Their annotations are not used for optimization. Refer to the [dataset notes](docs/datasets.md) for more information.
 
-## Citation and license
+## Citation and License
 
 See [CITATION.cff](CITATION.cff). The AnomNOVIC code and project assets are under [CC BY-NC 4.0](LICENSE) except where separate license terms apply. The paper figures and some YCB-derived virtual anomaly cutouts retain their CC BY 4.0 attribution requirements. Refer to the [third-party notices](docs/third_party.md).
