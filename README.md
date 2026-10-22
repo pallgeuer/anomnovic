@@ -27,12 +27,12 @@ This repository provides the code and configurations required for training, infe
 
 | Path | Contents |
 | --- | --- |
-| [`configs/`](configs/) | MAE training commands |
+| [`configs/`](configs/) | MAE training and inference commands |
 | [`evaluation/`](evaluation/) | NICOL evaluation mappings |
 | [`src/anomnovic/mae/`](src/anomnovic/mae/) | MAE model and training |
 | [`src/anomnovic/inference.py`](src/anomnovic/inference.py) | Detection and naming |
 | [`src/anomnovic/evaluate.py`](src/anomnovic/evaluate.py) | COCO evaluation |
-| [`docs/`](docs/) | Assets and attribution |
+| [`docs/`](docs/) | Paper workflows, assets, and attribution |
 
 ## Installation
 
@@ -67,7 +67,7 @@ Download a NICOL MAE checkpoint from the [checkpoint assets](docs/checkpoints.md
 anomnovic-infer --image_dir /PATH/TO/IMAGES --output PREDICTIONS.json --anom_model_type mae_vit_base_patch16 --anom_model /PATH/TO/mae_plain.pth --table_mask --anomaly_mask --novic_model /PATH/TO/novic_n_ft2.train
 ```
 
-The command writes a JSON list of boxes, scores and free-form category names. `--declass` runs localization without NOVIC. `--show` displays images in a graphical environment. See `anomnovic-infer --help` for thresholds and other settings.
+The command writes a JSON list of boxes, scores and free-form category names. `--declass` runs localization without NOVIC. `--show` displays images in a graphical environment. See `anomnovic-infer --help` for thresholds and other settings. For the supplied NICOL checkpoints, use the matching scripts and prompted or SAM variants in the [paper reproduction guide](docs/paper_reproduction.md).
 
 | [![AnomNOVIC predictions with object boxes and free-form labels on a Wild tabletop scene](docs/images/anomnovic_wild_result.jpg)](docs/images/anomnovic_wild_result.jpg) |
 | :-: |
@@ -84,7 +84,7 @@ anomnovic-evaluate align /PATH/TO/PRED_NAMED.json /PATH/TO/GT_PLAIN.json evaluat
 anomnovic-evaluate evaluate /PATH/TO/GT_PLAIN.json /PATH/TO/PRED_COCO.json
 ```
 
-The category alignment file records which free-form nouns count as correct or close for those classes. Review unfamiliar predictions before treating the open vocabulary COCO metric as final. The label remap file allows a remapping to be specified for e.g. renaming or merging annotated classes in a test dataset.
+The category alignment file records which free-form nouns count as correct or close for those classes. Review unfamiliar predictions before treating the open vocabulary COCO metric as final. The label remap file allows a remapping to be specified for e.g. renaming or merging annotated classes in a test dataset. The [paper reproduction guide](docs/paper_reproduction.md) covers both datasets and all prompted and SAM combinations.
 
 ## Training
 

@@ -60,7 +60,7 @@ class SingleClassImageFolder(DatasetFolder):
 
         # Precompute anomaly file list filtered by extension.
         if self.is_train:
-            self.virtual_anomaly_files = [str(p) for p in self.virtual_anomalies_path.iterdir() if p.suffix.lower() in ['.png', '.jpg', '.jpeg']]
+            self.virtual_anomaly_files = [str(p) for p in sorted(self.virtual_anomalies_path.iterdir()) if p.suffix.lower() in ['.png', '.jpg', '.jpeg']]
             if not self.virtual_anomaly_files:
                 raise ValueError(f"No virtual anomaly images found in {self.virtual_anomalies_path}")
             self.virtual_anomalies = []
