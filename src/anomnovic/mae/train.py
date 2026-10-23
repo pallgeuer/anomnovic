@@ -44,6 +44,8 @@ def get_args_parser():
                         help='Batch size per GPU (effective batch size is batch_size * accum_iter * world_size)')
     parser.add_argument('--epochs', default=400, type=int,
                         help='Number of training epochs')
+    parser.add_argument('--stop_after_epoch', default=None, type=int, metavar='N',
+                        help='Stop after completing epochs 0 through N-1, while keeping --epochs as the full schedule length')
     parser.add_argument('--accum_iter', default=1, type=int,
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
 
@@ -229,6 +231,8 @@ def save_epoch_preview(model, dataset_val, device, args, epoch):
 def main(args):
     misc.init_distributed_mode(args)
 
+    if args.stop_after_epoch is not None and not 1 <= args.stop_after_epoch <= args.epochs:
+        raise ValueError(f"--stop_after_epoch must be between 1 and --epochs ({args.epochs}) => Got {args.stop_after_epoch}")
     if args.fade_mask_ratio >= args.epochs:
         raise ValueError(f"--fade_mask_ratio must be < {args.epochs} (total num epochs) or negative (disabled) => Got {args.fade_mask_ratio}")
 
@@ -314,9 +318,13 @@ def main(args):
 
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
 
-    print(f"Start training for {args.epochs} epochs")
+    end_epoch = args.stop_after_epoch if args.stop_after_epoch is not None else args.epochs
+    if args.stop_after_epoch is not None and end_epoch <= args.start_epoch:
+        raise ValueError(f"--stop_after_epoch ({end_epoch}) must be greater than the starting epoch ({args.start_epoch})")
+
+    print(f"Start training through epoch {end_epoch - 1} (schedule: {args.epochs} epochs)")
     start_time = time.time()
-    for epoch in range(args.start_epoch, args.epochs):
+    for epoch in range(args.start_epoch, end_epoch):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
         train_stats = train_one_epoch(
@@ -325,7 +333,7 @@ def main(args):
             log_writer=log_writer,
             args=args
         )
-        if args.output_dir and (epoch % 100 == 0 or epoch + 1 == args.epochs):
+        if args.output_dir and (epoch % 100 == 0 or epoch + 1 == end_epoch):
             misc.save_model(
                 args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer,
                 loss_scaler=loss_scaler, epoch=epoch)

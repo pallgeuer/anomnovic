@@ -110,6 +110,22 @@ bash configs/train_distractors.sh /PATH/TO/TRAIN_DISTRACTORS_DIR /PATH/TO/TEST_D
 
 Training configuration parameters follow the two supplied MAE checkpoints. The test images are used for validation previews only. Their annotations are not used for optimization. Refer to the [dataset notes](docs/datasets.md) for more information.
 
+The scripts accept additional training flags after the three directory arguments. For a short check, `--stop_after_epoch 10` trains epochs 0–9 and saves a resumable `checkpoint-9.pth`. The configured `--epochs 2000` still controls learning rate and masking throughout the short run.
+
+```bash
+bash configs/train_plain.sh /PATH/TO/TRAIN_PLAIN_DIR /PATH/TO/TEST_PLAIN_DIR /PATH/TO/OUTPUT_PLAIN_DIR --stop_after_epoch 10
+bash configs/train_distractors.sh /PATH/TO/TRAIN_DISTRACTORS_DIR /PATH/TO/TEST_DISTRACTORS_DIR /PATH/TO/OUTPUT_DISTRACTORS_DIR --batch_size 64 --accum_iter 3 --stop_after_epoch 10
+```
+
+On a 12 GiB RTX 3060, the distractor preset's batch size 192 ran out of memory. Batch size 64 with three gradient accumulation steps completed successfully, retaining an effective batch size of 192 on one GPU. The same flags also work for a full 2,000 epoch run when `--stop_after_epoch` is omitted.
+
+Resume in the same output directory to train through epoch 19. Keep the batch settings when resuming distractor training:
+
+```bash
+bash configs/train_plain.sh /PATH/TO/TRAIN_PLAIN_DIR /PATH/TO/TEST_PLAIN_DIR /PATH/TO/OUTPUT_PLAIN_DIR --resume /PATH/TO/OUTPUT_PLAIN_DIR/checkpoint-9.pth --stop_after_epoch 20
+bash configs/train_distractors.sh /PATH/TO/TRAIN_DISTRACTORS_DIR /PATH/TO/TEST_DISTRACTORS_DIR /PATH/TO/OUTPUT_DISTRACTORS_DIR --batch_size 64 --accum_iter 3 --resume /PATH/TO/OUTPUT_DISTRACTORS_DIR/checkpoint-9.pth --stop_after_epoch 20
+```
+
 ## Citation and License
 
 See [CITATION.cff](CITATION.cff). The AnomNOVIC code and project assets are under [CC BY-NC 4.0](LICENSE) except where separate license terms apply. The paper figures and some YCB-derived virtual anomaly cutouts retain their CC BY 4.0 attribution requirements. Refer to the [third-party notices](docs/third_party.md).
