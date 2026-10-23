@@ -307,6 +307,17 @@ def main():
     ev.add_argument('ground_truth')
     ev.add_argument('predictions')
     ev.add_argument('--class_agnostic', action='store_true')
+    vis = sub.add_parser('visualize', help='Draw saved predictions on their source images')
+    vis.add_argument('image_dir')
+    vis.add_argument('predictions_json')
+    vis.add_argument('output_dir')
+    vis.add_argument('--ground_truth', help='COCO ground truth for image IDs, class names, and optional boxes')
+    vis.add_argument('--show_ground_truth', action='store_true', help='Draw ground-truth boxes alongside predictions')
+    vis.add_argument('--classes', nargs='+', help='Ordered class names for category IDs, starting at ID 1')
+    vis.add_argument('--num_images', type=int, default=0, help='Randomly select this many images, or 0 for all')
+    vis.add_argument('--seed', type=int, default=0, help='Seed for image sampling and random label placement')
+    vis.add_argument('--random_labels', action='store_true', help='Place labels at varied heights inside boxes')
+    vis.add_argument('--overwrite', action='store_true', help='Replace existing rendered images')
     args = parser.parse_args()
     if args.command == 'ground-truth':
         if args.remap_file:
@@ -323,6 +334,14 @@ def main():
                             args.category_names, args.min_bbox_size, args.max_bbox_size)
     elif args.command == 'evaluate':
         eval_pred(args.ground_truth, args.predictions, args.class_agnostic)
+    elif args.command == 'visualize':
+        from anomnovic.visualize import visualize_predictions
+        count = visualize_predictions(
+            args.image_dir, args.predictions_json, args.output_dir,
+            ground_truth=args.ground_truth, show_ground_truth=args.show_ground_truth,
+            classes=args.classes, num_images=args.num_images, seed=args.seed,
+            random_labels=args.random_labels, overwrite=args.overwrite)
+        print(f'Saved {count} visualizations to {args.output_dir}')
 
 
 if __name__ == '__main__':

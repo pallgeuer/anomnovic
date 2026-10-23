@@ -45,6 +45,18 @@ bash configs/infer_distractors.sh "$DISTRACTOR_IMAGES" "$DISTRACTOR_MAE" "$NOVIC
 
 The plain script uses the B1999 settings at a 224-pixel MAE input size. The area thresholds apply at MAE resolution, and the code scales NOVIC crop borders to each input image. The distractor script uses the OB1999 threshold values from the paper experiments. Both scripts allow additional inference flags after the four positional paths.
 
+## Save prediction images
+
+Render an inference JSON after it has been written. Prediction files that contain `image_id` need the corresponding COCO ground-truth JSON to map IDs to image filenames. The first example uses free-form names from NOVIC. The second uses the prompted class list above so the image displays the actual candidate `minicar` rather than the ground-truth category `minibus`. Its optional ground-truth overlay draws annotations in red and predictions in blue.
+
+```bash
+anomnovic-evaluate visualize "$PLAIN_IMAGES" "$RESULTS/plain_free.json" "$RESULTS/plain_free_images" --ground_truth "$RESULTS/gt_plain.json"
+anomnovic-evaluate visualize "$PLAIN_IMAGES" "$RESULTS/plain_prompted.json" "$RESULTS/plain_prompted_images" --ground_truth "$RESULTS/gt_plain.json" --classes "${CUSTOM_CLASSES[@]}" --show_ground_truth
+anomnovic-evaluate visualize /PATH/TO/WILD_IMAGES /PATH/TO/WILD_PREDICTIONS.json /PATH/TO/WILD_VISUALIZATIONS
+```
+
+Without a ground-truth overlay, prediction boxes are red. The command saves every input image, including images with no detections, using its original filename and format. Labels appear above boxes by default. Add `--random_labels` to vary their vertical positions and make overlapping predictions easier to see. Use `--seed 7` to repeat those placements or a `--num_images 50` random sample. Existing output images are protected unless `--overwrite` is supplied. For prompted predictions without ground truth, pass the inference candidate names in ID order with `--classes`. If only an ID is available, its label appears as `class 1`, `class 2`, and so on.
+
 ## Evaluate the predictions
 
 Prompt-free predictions contain generated category names. Align those names with the NICOL evaluation categories before COCO evaluation. The [alignment file](../evaluation/nicol_category_alignment.json) captures the category judgments available for the paper experiments. Review any new names printed as missing by `align` before interpreting a prompt-free AP value.

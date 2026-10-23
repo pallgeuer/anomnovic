@@ -31,7 +31,8 @@ This repository provides the code and configurations required for training, infe
 | [`evaluation/`](evaluation/) | NICOL evaluation mappings |
 | [`src/anomnovic/mae/`](src/anomnovic/mae/) | MAE model and training |
 | [`src/anomnovic/inference.py`](src/anomnovic/inference.py) | Detection and naming |
-| [`src/anomnovic/evaluate.py`](src/anomnovic/evaluate.py) | COCO evaluation |
+| [`src/anomnovic/evaluate.py`](src/anomnovic/evaluate.py) | COCO evaluation and visualization command |
+| [`src/anomnovic/visualize.py`](src/anomnovic/visualize.py) | Saved prediction rendering |
 | [`docs/`](docs/) | Paper workflows, assets, and attribution |
 
 ## Installation
@@ -68,6 +69,14 @@ anomnovic-infer --image_dir /PATH/TO/IMAGES --output PREDICTIONS.json --anom_mod
 ```
 
 The command writes a JSON list of boxes, scores and free-form category names. `--declass` runs localization without NOVIC. `--show` displays images in a graphical environment. See `anomnovic-infer --help` for thresholds and other settings. For the supplied NICOL checkpoints, use the matching scripts and prompted or SAM variants in the [paper reproduction guide](docs/paper_reproduction.md).
+
+To save the predicted boxes and labels on copies of the input images, render the saved inference JSON after the run.
+
+```bash
+anomnovic-evaluate visualize /PATH/TO/IMAGES /PATH/TO/PREDICTIONS.json /PATH/TO/VISUALIZATIONS
+```
+
+Predictions that use COCO image IDs also need `--ground_truth /PATH/TO/GT.json` to find their source images. Add `--random_labels` to vary label positions when several predictions overlap. The [paper reproduction guide](docs/paper_reproduction.md) covers class names, ground-truth overlays, and output options.
 
 | [![AnomNOVIC predictions with object boxes and free-form labels on a Wild tabletop scene](docs/images/anomnovic_wild_result.jpg)](docs/images/anomnovic_wild_result.jpg) |
 | :-: |
