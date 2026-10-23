@@ -1,0 +1,16 @@
+# Public NOVIC v1.0.0 assets and Hugging Face model files used for inference.
+# Paths are relative to the AnomNOVIC repository root.
+# CLIP snapshot 01b771ed0d1395ca5ffdd279897d665ebe00dfd2
+# SAM2 snapshot 665f8e2ad61cf5f53d65644ff27c8ee525124610
+bae38f4dbf2527995f2a6c859168980130c29fbcd3cdc05f3ee58fb04122ac51  assets/archives/dfn5bl_ft0_ye2_ovod_20240628_142131.zip
+6b411f0b3f3d589deb95ccbdc24c700ed2308c63f71722da4e0543690f53d900  assets/archives/dfn5bl_ft2_ya2_ovod_20240620_162925.zip
+01ade7136b777e111a0cc3e08e0800143332beb81bf412ffac6fd1cd066612e8  assets/checkpoints/novic_ft0.train
+952f4131dab14b107f1164b4ba1737e436275fc489051994999c70e33dfc3d09  assets/checkpoints/novic_ft2.train
+c07a17b547d461c60a3cce5062b26bf8545b13de602c4c59d8490361eb716033  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/open_clip_pytorch_model.bin
+e043bd1129b97d3afc77eef2e8bfda940af588dabf2cbaacc21e956345402f67  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/open_clip_config.json
+d8b124290bc4bcd18cd3f72747f525e2a1d8c266cf3089e52da38ee417564ac5  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/tokenizer.json
+00439066fcba73de57644cf41e4e3b9f2dbb09d7f3fc2005898ba52399045882  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/tokenizer_config.json
+c4864a9376a8401918425bed71fc14fc0e81f9b59ec45c1cf96cccb2df508eac  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/special_tokens_map.json
+5047b556ce86ccaf6aa22b3ffccfc52d391ea4accdab9c2f2407da5b742d4363  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/vocab.json
+f526393189112391ce6f9795d4695f704121ce452c3aad1f5335cc41337eba85  assets/huggingface/hub/models--apple--DFN5B-CLIP-ViT-H-14-378/snapshots/01b771ed0d1395ca5ffdd279897d665ebe00dfd2/merges.txt
+2647878d5dfa5098f2f8649825738a9345572bae2d4350a2468587ece47dd318  assets/huggingface/hub/models--facebook--sam2.1-hiera-large/snapshots/665f8e2ad61cf5f53d65644ff27c8ee525124610/sam2.1_hiera_large.pt

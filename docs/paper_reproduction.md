@@ -59,7 +59,9 @@ Without a ground-truth overlay, prediction boxes are red. The command saves ever
 
 ## Evaluate the predictions
 
-Prompt-free predictions contain generated category names. Align those names with the NICOL evaluation categories before COCO evaluation. The [alignment file](../evaluation/nicol_category_alignment.json) captures the category judgments available for the paper experiments. Review any new names printed as missing by `align` before interpreting a prompt-free AP value.
+Prompt-free predictions contain generated category names. Align those names with the NICOL evaluation categories before COCO evaluation. A noun already equal to a COCO category passes through directly. For any other noun, `align` finds the best-overlapping ground-truth box. If its IoU is below `0.49`, the prediction maps to `other`. Otherwise, `align` checks the `correct`, `close`, and `incorrect` noun lists for that ground-truth category in the [alignment file](../evaluation/nicol_category_alignment.json). An unjudged noun also maps to `other`, and `MISSING:` reports the encountered unjudged category and noun pairs. `MISSING: {}` means that particular pass encountered no missing pairs. It does not establish that the file is complete for other outputs. Prompted predictions do not use this alignment step.
+
+Treat prompt-free AP scores with missing judgments as provisional. Inspect each reported prediction box and source image, then decide whether the noun belongs in exactly one appropriate list under that ground-truth category. Add the judgment consistently without duplicate entries. Rerun `align` for every affected prompt-free JSON, then rerun `evaluate` on the regenerated aligned JSON. Keep the raw inference JSON unchanged. The alignment file is not changed automatically.
 
 ```bash
 anomnovic-evaluate align "$RESULTS/plain_free.json" "$RESULTS/gt_plain.json" evaluation/nicol_category_alignment.json "$RESULTS/plain_free_coco.json"

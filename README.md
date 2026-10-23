@@ -37,24 +37,28 @@ This repository provides the code and configurations required for training, infe
 
 ## Installation
 
-Use Python 3.10+ in an environment with a PyTorch build suitable for your device.
+The tested inference setup targets Linux x86-64, Python 3.10, and CUDA 11.8. Install [uv](https://docs.astral.sh/uv/) first, then run the setup from the repository root. It creates `.venv/`, checks out the tested NOVIC revision, prepares verified model assets under `assets/`, and patches the installed `timm==0.3.2` import for the locked PyTorch version.
 
 ```bash
 git clone https://github.com/pallgeuer/anomnovic.git
 cd anomnovic
-python -m pip install -e .
+bash scripts/setup_inference.sh
+source scripts/activate_inference.sh
 ```
 
-For object classification, also clone [NOVIC](https://github.com/pallgeuer/novic) at tag `v1.0.2`, install its inference requirements in the same environment, and make its top-level `infer.py` importable.
+The activation script selects the exact NOVIC checkout and verified Hugging Face cache and enables offline model loading. Source it in each shell used for inference. Check the public asset files against [their SHA-256 manifest](docs/THIRD_PARTY_SHA256SUMS.txt) at any time with this command.
 
 ```bash
-git clone https://github.com/pallgeuer/novic.git ../novic
-git -C ../novic checkout v1.0.2
-python -m pip install -r ../novic/requirements-infer.txt
-export PYTHONPATH="$(realpath ../novic)${PYTHONPATH:+:$PYTHONPATH}"
+python scripts/prepare_inference_assets.py --verify-only
 ```
 
-The optional SAM2 refinement step requires [SAM2](https://github.com/facebookresearch/sam2). Omit `--sam_model` from the appropriate commands to run without it. On first NOVIC inference, its CLIP image backbone will be downloaded into the local model cache.
+The resolved inference dependencies are in [`requirements-infer.lock`](requirements-infer.lock). The lock includes the packages needed by NOVIC inference because NOVIC v1.0.2 leaves OpenCLIP, Optimum, and Transformers commented out in its inference requirements. Setup uses uv's `--torch-backend cu118` option to select the CUDA 11.8 PyTorch wheels. To regenerate the lock for the same target, run the following command from the repository root.
+
+```bash
+SAM2_BUILD_CUDA=0 uv pip compile pyproject.toml --extra inference --python-version 3.10 --python-platform x86_64-unknown-linux-gnu --torch-backend cu118 --emit-index-url --output-file requirements-infer.lock
+```
+
+Omit `--sam_model` from inference commands to run without the optional SAM2 refinement step. Inference was tested on a 12 GiB RTX 3060 GPU.
 
 ## Datasets and Checkpoints
 
